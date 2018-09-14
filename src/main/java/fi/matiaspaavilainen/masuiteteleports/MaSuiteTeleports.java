@@ -15,6 +15,7 @@ public class MaSuiteTeleports extends JavaPlugin implements Listener {
     public void onEnable() {
         super.onEnable();
         getServer().getPluginManager().registerEvents(this, this);
+        getServer().getPluginManager().registerEvents(new CombatLog(), this);
         this.getServer().getMessenger().registerOutgoingPluginChannel(this, "BungeeCord");
         this.getServer().getMessenger().registerIncomingPluginChannel(this, "BungeeCord", new TeleportListener(this));
     }

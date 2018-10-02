@@ -6,8 +6,9 @@
 
     <groupId>fi.matiaspaavilainen</groupId>
     <artifactId>MaSuiteTeleportsBridge</artifactId>
-    <version>1.2.3</version>
+    <version>1.2.4</version>
     <build>
+        <finalName>MaSuiteTeleportsBridge</finalName>
         <defaultGoal>clean package install</defaultGoal>
         <resources>
             <resource>

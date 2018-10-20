@@ -34,6 +34,7 @@ public class Deny implements CommandExecutor {
             out.writeUTF("TeleportDeny");
             out.writeUTF(sender.getName());
             p.sendPluginMessage(plugin, "BungeeCord", b.toByteArray());
+            return true;
         } catch (IOException e) {
             e.printStackTrace();
         }

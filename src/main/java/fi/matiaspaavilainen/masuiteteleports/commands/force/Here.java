@@ -35,6 +35,7 @@ public class Here implements CommandExecutor {
             out.writeUTF(sender.getName());
             out.writeUTF(args[0]);
             p.sendPluginMessage(plugin, "BungeeCord", b.toByteArray());
+            return true;
         } catch (IOException e) {
             e.printStackTrace();
         }

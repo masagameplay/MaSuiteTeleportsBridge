@@ -34,6 +34,7 @@ public class Accept implements CommandExecutor {
             out.writeUTF("TeleportAccept");
             out.writeUTF(sender.getName());
             p.sendPluginMessage(plugin, "BungeeCord", b.toByteArray());
+            return true;
         } catch (IOException e) {
             e.printStackTrace();
         }

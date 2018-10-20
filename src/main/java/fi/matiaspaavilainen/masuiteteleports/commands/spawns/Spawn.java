@@ -12,7 +12,6 @@ import java.io.IOException;
 
 public class Spawn implements CommandExecutor {
 
-
     private MaSuiteTeleports plugin;
 
     public Spawn(MaSuiteTeleports p){
@@ -34,6 +33,7 @@ public class Spawn implements CommandExecutor {
             out.writeUTF("SpawnPlayer");
             out.writeUTF(sender.getName());
             sender.getServer().sendPluginMessage(plugin,"BungeeCord", b.toByteArray());
+            return true;
         } catch (IOException e) {
             e.printStackTrace();
         }

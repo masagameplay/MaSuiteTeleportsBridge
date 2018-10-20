@@ -10,6 +10,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 
+// TODO: Add different types eg. to coords or to player
 public class Teleport implements CommandExecutor {
 
     private MaSuiteTeleports plugin;
@@ -35,6 +36,7 @@ public class Teleport implements CommandExecutor {
             out.writeUTF(sender.getName());
             out.writeUTF(args[0]);
             p.sendPluginMessage(plugin, "BungeeCord", b.toByteArray());
+            return true;
         } catch (IOException e) {
             e.printStackTrace();
         }

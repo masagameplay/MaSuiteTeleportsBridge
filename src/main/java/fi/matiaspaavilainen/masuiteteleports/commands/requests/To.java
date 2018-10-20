@@ -11,7 +11,7 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 
 public class To implements CommandExecutor {
-    
+
     private MaSuiteTeleports plugin;
 
     public To(MaSuiteTeleports p) {
@@ -38,7 +38,6 @@ public class To implements CommandExecutor {
         } catch (IOException e) {
             e.printStackTrace();
         }
-
         return false;
     }
 }

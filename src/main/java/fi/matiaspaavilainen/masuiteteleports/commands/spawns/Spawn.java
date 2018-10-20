@@ -23,7 +23,7 @@ public class Spawn implements CommandExecutor {
         if(!(sender instanceof Player)){
             return false;
         }
-        if(args.length != 1){
+        if(args.length != 0){
             return false;
         }
 

@@ -22,21 +22,24 @@ public class All implements CommandExecutor {
         if (!(sender instanceof Player)) {
             return false;
         }
-        if (args.length != 0) {
-            return false;
-        }
-
-        Player p = (Player) sender;
-        ByteArrayOutputStream b = new ByteArrayOutputStream();
-        DataOutputStream out = new DataOutputStream(b);
-        try {
-            out.writeUTF("MaSuiteTeleports");
-            out.writeUTF("TeleportForceAll");
-            out.writeUTF(sender.getName());
-            p.sendPluginMessage(plugin, "BungeeCord", b.toByteArray());
-            return true;
-        } catch (IOException e) {
-            e.printStackTrace();
+        if (args.length == 0 || args.length == 1) {
+            Player p = (Player) sender;
+            ByteArrayOutputStream b = new ByteArrayOutputStream();
+            DataOutputStream out = new DataOutputStream(b);
+            try {
+                out.writeUTF("MaSuiteTeleports");
+                out.writeUTF("TeleportForceAll");
+                if (args.length == 0) {
+                    out.writeUTF(sender.getName());
+                }
+                if (args.length == 1) {
+                    out.writeUTF(args[0]);
+                }
+                p.sendPluginMessage(plugin, "BungeeCord", b.toByteArray());
+                return true;
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
         return false;
     }

@@ -27,27 +27,23 @@ public class TeleportListener implements PluginMessageListener {
         try {
             subchannel = in.readUTF();
             method = in.readUTF();
-            if (subchannel.equals("Teleport")) {
-                if(method.equals("SenderToPlayer")){
-                    teleportPlayer(in.readUTF(), in.readUTF());
-                }
+            if(subchannel.equals("MaSuiteTeleports")){
                 if(method.equals("PlayerToPlayer")){
                     teleportPlayer(in.readUTF(), in.readUTF());
+                }
+                if(method.equals("PlayerToXYZ")){
+                    Player p = Bukkit.getPlayer(UUID.fromString(in.readUTF()));
+                    p.teleport(new Location(p.getWorld(), in.readDouble(), in.readDouble(), in.readDouble()));
+                }
+                if(method.equals("PlayerToLocation")){
+                    Player p = Bukkit.getPlayer(UUID.fromString(in.readUTF()));
+                    p.teleport(new Location(Bukkit.getWorld(in.readUTF()), in.readDouble(), in.readDouble(), in.readDouble()));
+                }
 
-                }
-                if(method.equals("SenderToCoords")){
-                    Player sender = Bukkit.getPlayer(in.readUTF());
-                    Location loc = new Location(sender.getWorld(), in.readDouble(), in.readDouble(), in.readDouble());
-                    sender.teleport(loc);
-                }
-                if(method.equals("PlayerToCoords")){
-                    Player target = Bukkit.getPlayer(in.readUTF());
-                    Location loc = new Location(target.getWorld(), in.readDouble(), in.readDouble(), in.readDouble());
-                    target.teleport(loc);
-                }
                 if(method.equals("SpawnPlayer")){
                     Player p = Bukkit.getPlayer(UUID.fromString(in.readUTF()));
-                    Location loc = new Location(Bukkit.getWorld(in.readUTF()), in.readDouble(), in.readDouble(), in.readDouble(), in.readFloat(), in.readFloat());
+                    String[] locInfo = in.readUTF().split(":");
+                    Location loc = new Location(Bukkit.getWorld(locInfo[0]), Double.parseDouble(locInfo[1]), Double.parseDouble(locInfo[2]), Double.parseDouble(locInfo[3]), Float.parseFloat(locInfo[4]), Float.parseFloat(locInfo[5]));
                     p.teleport(loc);
                 }
             }

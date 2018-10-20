@@ -15,7 +15,6 @@ public class MaSuiteTeleports extends JavaPlugin implements Listener {
     public void onEnable() {
         super.onEnable();
         getServer().getPluginManager().registerEvents(this, this);
-        getServer().getPluginManager().registerEvents(new CombatLog(), this);
         this.getServer().getMessenger().registerOutgoingPluginChannel(this, "BungeeCord");
         this.getServer().getMessenger().registerIncomingPluginChannel(this, "BungeeCord", new TeleportListener(this));
     }
@@ -24,6 +23,7 @@ public class MaSuiteTeleports extends JavaPlugin implements Listener {
     public void onDeath(PlayerRespawnEvent e){
         Player p = e.getPlayer();
         ByteArrayDataOutput out = ByteStreams.newDataOutput();
+        out.writeUTF("MaSuiteTeleports");
         out.writeUTF("SpawnPlayer");
         out.writeUTF(p.getName());
         p.sendPluginMessage(this, "BungeeCord", out.toByteArray());

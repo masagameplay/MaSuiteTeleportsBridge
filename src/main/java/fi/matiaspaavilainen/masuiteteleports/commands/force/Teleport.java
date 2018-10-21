@@ -1,6 +1,7 @@
 package fi.matiaspaavilainen.masuiteteleports.commands.force;
 
 import fi.matiaspaavilainen.masuiteteleports.MaSuiteTeleports;
+import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -42,8 +43,9 @@ public class Teleport implements CommandExecutor {
                     out.writeUTF(args[1]);
                     break;
                 case (3):
+                    // Teleport sender to coordinates
                     if (!isDouble(args[0]) && !isDouble(args[1]) && !isDouble(args[2])) {
-                        return false;
+                        break;
                     }
                     out.writeUTF("TeleportToXYZ");
                     out.writeUTF(sender.getName());
@@ -52,12 +54,23 @@ public class Teleport implements CommandExecutor {
                     out.writeDouble(Double.parseDouble(args[1]));
                     out.writeDouble(Double.parseDouble(args[2]));
                     break;
-
-                    // TODO: Make a cheeck to get command type
                 case (4):
                     if (!isDouble(args[1]) && !isDouble(args[2]) && !isDouble(args[3])) {
-                        return false;
+                        break;
                     }
+                    // If any of the server's worlds match to args[0]
+                    if(Bukkit.getWorlds().stream().anyMatch(world -> world.getName().equals(args[0]))){
+                        out.writeUTF("TeleportToCoordinates");
+                        out.writeUTF(sender.getName());
+                        out.writeUTF(sender.getName());
+                        out.writeUTF(args[0]);
+                        out.writeDouble(Double.parseDouble(args[1]));
+                        out.writeDouble(Double.parseDouble(args[2]));
+                        out.writeDouble(Double.parseDouble(args[3]));
+                        break;
+                    }
+
+                    // If not, send target to XYZ
                     out.writeUTF("TeleportToXYZ");
                     out.writeUTF(sender.getName());
                     out.writeUTF(args[0]);
@@ -65,16 +78,18 @@ public class Teleport implements CommandExecutor {
                     out.writeDouble(Double.parseDouble(args[2]));
                     out.writeDouble(Double.parseDouble(args[3]));
                     break;
-                case (5):
-                    if (!isDouble(args[1]) && !isDouble(args[2]) && !isDouble(args[3])) {
-                        return false;
+                case(5):
+                    // Teleport target to location
+                    if (!isDouble(args[2]) && !isDouble(args[3]) && !isDouble(args[4])) {
+                        break;
                     }
                     out.writeUTF("TeleportToCoordinates");
                     out.writeUTF(sender.getName());
                     out.writeUTF(args[0]);
-                    out.writeDouble(Double.parseDouble(args[1]));
+                    out.writeUTF(args[1]);
                     out.writeDouble(Double.parseDouble(args[2]));
                     out.writeDouble(Double.parseDouble(args[3]));
+                    out.writeDouble(Double.parseDouble(args[4]));
                     break;
             }
 
@@ -90,9 +105,9 @@ public class Teleport implements CommandExecutor {
     private boolean isDouble(String string) {
         try {
             Double.parseDouble(string);
+            return true;
         } catch (NumberFormatException e) {
             return false;
         }
-        return true;
     }
 }

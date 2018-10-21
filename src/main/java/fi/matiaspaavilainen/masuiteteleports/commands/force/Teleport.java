@@ -11,7 +11,8 @@ import java.io.ByteArrayOutputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 
-// TODO: Add different types eg. to coords or to player
+import static fi.matiaspaavilainen.masuiteteleports.MaSuiteTeleports.colorize;
+
 public class Teleport implements CommandExecutor {
 
     private MaSuiteTeleports plugin;
@@ -30,15 +31,15 @@ public class Teleport implements CommandExecutor {
         DataOutputStream out = new DataOutputStream(b);
         try {
             out.writeUTF("MaSuiteTeleports");
+            out.writeUTF("TeleportForceTo");
+            out.writeUTF(sender.getName());
             switch (args.length) {
                 case (1):
-                    out.writeUTF("TeleportForceTo");
-                    out.writeUTF(sender.getName());
+                    out.writeUTF("TeleportSenderToTarget");
                     out.writeUTF(args[0]);
                     break;
                 case (2):
                     out.writeUTF("TeleportTargetToTarget");
-                    out.writeUTF(sender.getName());
                     out.writeUTF(args[0]);
                     out.writeUTF(args[1]);
                     break;
@@ -49,7 +50,6 @@ public class Teleport implements CommandExecutor {
                     }
                     out.writeUTF("TeleportToXYZ");
                     out.writeUTF(sender.getName());
-                    out.writeUTF(sender.getName());
                     out.writeDouble(Double.parseDouble(args[0]));
                     out.writeDouble(Double.parseDouble(args[1]));
                     out.writeDouble(Double.parseDouble(args[2]));
@@ -59,9 +59,8 @@ public class Teleport implements CommandExecutor {
                         break;
                     }
                     // If any of the server's worlds match to args[0]
-                    if(Bukkit.getWorlds().stream().anyMatch(world -> world.getName().equals(args[0]))){
+                    if (Bukkit.getWorlds().stream().anyMatch(world -> world.getName().equals(args[0]))) {
                         out.writeUTF("TeleportToCoordinates");
-                        out.writeUTF(sender.getName());
                         out.writeUTF(sender.getName());
                         out.writeUTF(args[0]);
                         out.writeDouble(Double.parseDouble(args[1]));
@@ -72,24 +71,28 @@ public class Teleport implements CommandExecutor {
 
                     // If not, send target to XYZ
                     out.writeUTF("TeleportToXYZ");
-                    out.writeUTF(sender.getName());
                     out.writeUTF(args[0]);
                     out.writeDouble(Double.parseDouble(args[1]));
                     out.writeDouble(Double.parseDouble(args[2]));
                     out.writeDouble(Double.parseDouble(args[3]));
                     break;
-                case(5):
+                case (5):
                     // Teleport target to location
                     if (!isDouble(args[2]) && !isDouble(args[3]) && !isDouble(args[4])) {
                         break;
                     }
                     out.writeUTF("TeleportToCoordinates");
-                    out.writeUTF(sender.getName());
                     out.writeUTF(args[0]);
                     out.writeUTF(args[1]);
                     out.writeDouble(Double.parseDouble(args[2]));
                     out.writeDouble(Double.parseDouble(args[3]));
                     out.writeDouble(Double.parseDouble(args[4]));
+                    break;
+                default:
+                    sender.sendMessage(colorize(plugin.config.getSyntaxes().getString("tp.title")));
+                    for (String syntax : plugin.config.getSyntaxes().getStringList("tp.syntaxes")) {
+                        sender.sendMessage(colorize(syntax));
+                    }
                     break;
             }
 

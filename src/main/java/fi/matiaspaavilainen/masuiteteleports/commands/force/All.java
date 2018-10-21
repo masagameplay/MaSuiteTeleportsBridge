@@ -10,6 +10,8 @@ import java.io.ByteArrayOutputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 
+import static fi.matiaspaavilainen.masuiteteleports.MaSuiteTeleports.colorize;
+
 public class All implements CommandExecutor {
 
     private MaSuiteTeleports plugin;
@@ -22,7 +24,10 @@ public class All implements CommandExecutor {
         if (!(sender instanceof Player)) {
             return false;
         }
-        if (args.length == 0 || args.length == 1) {
+        if (args.length > 1) {
+            sender.sendMessage(colorize(plugin.config.getSyntaxes().getString("tpall")));
+            return false;
+        }
             Player p = (Player) sender;
             ByteArrayOutputStream b = new ByteArrayOutputStream();
             DataOutputStream out = new DataOutputStream(b);
@@ -40,7 +45,7 @@ public class All implements CommandExecutor {
             } catch (IOException e) {
                 e.printStackTrace();
             }
-        }
+
         return false;
     }
 }

@@ -10,6 +10,8 @@ import java.io.ByteArrayOutputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 
+import static fi.matiaspaavilainen.masuiteteleports.MaSuiteTeleports.colorize;
+
 public class Spawn implements CommandExecutor {
 
     private MaSuiteTeleports plugin;
@@ -23,16 +25,18 @@ public class Spawn implements CommandExecutor {
             return false;
         }
         if(args.length != 0){
+            sender.sendMessage(colorize(plugin.config.getSyntaxes().getString("spawn.teleport")));
             return false;
         }
 
         ByteArrayOutputStream b = new ByteArrayOutputStream();
         DataOutputStream out = new DataOutputStream(b);
+        Player p = (Player) sender;
         try {
             out.writeUTF("MaSuiteTeleports");
             out.writeUTF("SpawnPlayer");
-            out.writeUTF(sender.getName());
-            sender.getServer().sendPluginMessage(plugin,"BungeeCord", b.toByteArray());
+            out.writeUTF(p.getName());
+            p.sendPluginMessage(plugin,"BungeeCord", b.toByteArray());
             return true;
         } catch (IOException e) {
             e.printStackTrace();

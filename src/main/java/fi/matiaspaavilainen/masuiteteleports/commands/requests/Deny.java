@@ -10,6 +10,8 @@ import java.io.ByteArrayOutputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 
+import static fi.matiaspaavilainen.masuiteteleports.MaSuiteTeleports.colorize;
+
 public class Deny implements CommandExecutor {
 
     private MaSuiteTeleports plugin;
@@ -23,6 +25,7 @@ public class Deny implements CommandExecutor {
             return false;
         }
         if (args.length != 0) {
+            sender.sendMessage(colorize(plugin.config.getSyntaxes().getString("tpdeny")));
             return false;
         }
 

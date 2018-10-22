@@ -6,9 +6,7 @@ import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.messaging.PluginMessageListener;
 
-import java.io.ByteArrayInputStream;
-import java.io.DataInputStream;
-import java.io.IOException;
+import java.io.*;
 
 public class TeleportListener implements PluginMessageListener {
     private MaSuiteTeleports plugin;
@@ -46,6 +44,27 @@ public class TeleportListener implements PluginMessageListener {
                     String[] locInfo = in.readUTF().split(":");
                     Location loc = new Location(Bukkit.getWorld(locInfo[0]), Double.parseDouble(locInfo[1]), Double.parseDouble(locInfo[2]), Double.parseDouble(locInfo[3]), Float.parseFloat(locInfo[4]), Float.parseFloat(locInfo[5]));
                     p.teleport(loc);
+                }
+                if(method.equals("GetLocation")){
+                    Player p = Bukkit.getPlayer(in.readUTF());
+
+                    ByteArrayOutputStream b = new ByteArrayOutputStream();
+                    DataOutputStream out = new DataOutputStream(b);
+                    try {
+                        out.writeUTF("MaSuiteTeleports");
+                        out.writeUTF("GetLocation");
+                        out.writeUTF(p.getName());
+                        out.writeUTF(p.getWorld().getName());
+                        out.writeDouble(p.getLocation().getX());
+                        out.writeDouble(p.getLocation().getY());
+                        out.writeDouble(p.getLocation().getZ());
+                        out.writeFloat(p.getLocation().getYaw());
+                        out.writeFloat(p.getLocation().getPitch());
+                        out.writeUTF(in.readUTF());
+                        p.sendPluginMessage(plugin, "BungeeCord", b.toByteArray());
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
                 }
             }
         } catch (IOException e) {

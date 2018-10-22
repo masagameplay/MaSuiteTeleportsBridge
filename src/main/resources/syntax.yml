@@ -13,6 +13,8 @@ tp:
 tphere: "&cCorrect syntax: /tphere <player>"
 tpall: "&cCorrect syntax: /tpall (<player>)"
 
+back: "&Correct syntax: /back"
+
 spawn:
   set: "&cCorrect syntax: /setspawn <name>"
   delete: "&cCorrect syntax: /delspawn <name>"

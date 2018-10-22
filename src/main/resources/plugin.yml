@@ -40,3 +40,5 @@ commands:
   tpahere:
     permission: masuiteteleports.teleport.here
     description: Sends teleportation request to target
+  back:
+    permission: masuiteteleports.back

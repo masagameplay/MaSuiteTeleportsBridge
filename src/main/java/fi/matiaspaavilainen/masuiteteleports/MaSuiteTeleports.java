@@ -2,6 +2,7 @@ package fi.matiaspaavilainen.masuiteteleports;
 
 import com.google.common.io.ByteArrayDataOutput;
 import com.google.common.io.ByteStreams;
+import fi.matiaspaavilainen.masuiteteleports.commands.Back;
 import fi.matiaspaavilainen.masuiteteleports.commands.force.All;
 import fi.matiaspaavilainen.masuiteteleports.commands.force.Here;
 import fi.matiaspaavilainen.masuiteteleports.commands.force.Teleport;
@@ -54,6 +55,9 @@ public class MaSuiteTeleports extends JavaPlugin implements Listener {
         getCommand("delspawn").setExecutor(new Delete(this));
         getCommand("setspawn").setExecutor(new Set(this));
         getCommand("spawn").setExecutor(new Spawn(this));
+
+        // Back
+        getCommand("back").setExecutor(new Back(this));
     }
 
     @EventHandler

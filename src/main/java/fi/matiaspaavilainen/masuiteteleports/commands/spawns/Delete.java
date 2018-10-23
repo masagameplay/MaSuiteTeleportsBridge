@@ -30,13 +30,14 @@ public class Delete implements CommandExecutor {
             return false;
         }
 
+        Player p = (Player) sender;
         ByteArrayOutputStream b = new ByteArrayOutputStream();
         DataOutputStream out = new DataOutputStream(b);
         try {
             out.writeUTF("MaSuiteTeleports");
             out.writeUTF("DelSpawn");
-            out.writeUTF(sender.getName());
-            sender.getServer().sendPluginMessage(plugin,"BungeeCord", b.toByteArray());
+            out.writeUTF(p.getName());
+            p.sendPluginMessage(plugin,"BungeeCord", b.toByteArray());
             return true;
         } catch (IOException e) {
             e.printStackTrace();

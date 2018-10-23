@@ -69,7 +69,7 @@ public class MaSuiteTeleports extends JavaPlugin implements Listener {
 
     @EventHandler
     public void onDeath(PlayerRespawnEvent e) {
-        if(getConfig().getBoolean("spawn-on-death")){
+        if (getConfig().getBoolean("spawn-on-death")) {
             Player p = e.getPlayer();
             ByteArrayDataOutput out = ByteStreams.newDataOutput();
             out.writeUTF("MaSuiteTeleports");

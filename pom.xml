@@ -6,7 +6,7 @@
 
     <groupId>fi.matiaspaavilainen</groupId>
     <artifactId>MaSuiteTeleportsBridge</artifactId>
-    <version>1.3</version>
+    <version>1.3.2</version>
     <build>
         <finalName>MaSuiteTeleportsBridge</finalName>
         <plugins>

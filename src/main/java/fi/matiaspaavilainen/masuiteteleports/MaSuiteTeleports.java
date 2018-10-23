@@ -14,11 +14,17 @@ import fi.matiaspaavilainen.masuiteteleports.commands.spawns.Set;
 import fi.matiaspaavilainen.masuiteteleports.commands.spawns.Spawn;
 import fi.matiaspaavilainen.masuiteteleports.managers.TeleportListener;
 import net.md_5.bungee.api.ChatColor;
+import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.PlayerRespawnEvent;
 import org.bukkit.plugin.java.JavaPlugin;
+
+import java.io.ByteArrayOutputStream;
+import java.io.DataOutputStream;
+import java.io.IOException;
 
 public class MaSuiteTeleports extends JavaPlugin implements Listener {
 
@@ -33,13 +39,14 @@ public class MaSuiteTeleports extends JavaPlugin implements Listener {
 
         // Create configs
         config.createConfigs();
+        saveDefaultConfig();
 
         // Load
         loadCommands();
 
     }
 
-    private void loadCommands(){
+    private void loadCommands() {
         // Force
         getCommand("tpall").setExecutor(new All(this));
         getCommand("tphere").setExecutor(new Here(this));
@@ -61,16 +68,35 @@ public class MaSuiteTeleports extends JavaPlugin implements Listener {
     }
 
     @EventHandler
-    public void onDeath(PlayerRespawnEvent e){
-        Player p = e.getPlayer();
-        ByteArrayDataOutput out = ByteStreams.newDataOutput();
-        out.writeUTF("MaSuiteTeleports");
-        out.writeUTF("SpawnPlayer");
-        out.writeUTF(p.getName());
-        p.sendPluginMessage(this, "BungeeCord", out.toByteArray());
+    public void onDeath(PlayerRespawnEvent e) {
+        if(getConfig().getBoolean("spawn-on-death")){
+            Player p = e.getPlayer();
+            ByteArrayDataOutput out = ByteStreams.newDataOutput();
+            out.writeUTF("MaSuiteTeleports");
+            out.writeUTF("SpawnPlayer");
+            out.writeUTF(p.getName());
+            p.sendPluginMessage(this, "BungeeCord", out.toByteArray());
+        }
     }
 
-    public static String colorize(String msg){
+    @EventHandler
+    public void onDeath(PlayerDeathEvent e) {
+        ByteArrayOutputStream b = new ByteArrayOutputStream();
+        DataOutputStream out = new DataOutputStream(b);
+        try {
+            out.writeUTF("MaSuiteTeleports");
+            out.writeUTF("GetLocation");
+            out.writeUTF(e.getEntity().getName());
+            Location loc = e.getEntity().getLocation();
+            out.writeUTF(loc.getWorld().getName() + ":" + loc.getX() + ":" + loc.getY() + ":" + loc.getZ() + ":" + loc.getYaw() + ":" + loc.getPitch());
+            out.writeUTF("DETECTSERVER");
+            e.getEntity().sendPluginMessage(this, "BungeeCord", b.toByteArray());
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
+    }
+
+    public static String colorize(String msg) {
         return ChatColor.translateAlternateColorCodes('&', msg);
     }
 }

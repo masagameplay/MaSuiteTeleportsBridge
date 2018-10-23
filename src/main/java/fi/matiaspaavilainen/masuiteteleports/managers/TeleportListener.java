@@ -45,22 +45,18 @@ public class TeleportListener implements PluginMessageListener {
                     Location loc = new Location(Bukkit.getWorld(locInfo[0]), Double.parseDouble(locInfo[1]), Double.parseDouble(locInfo[2]), Double.parseDouble(locInfo[3]), Float.parseFloat(locInfo[4]), Float.parseFloat(locInfo[5]));
                     p.teleport(loc);
                 }
-                if(method.equals("GetLocation")){
+                if (method.equals("GetLocation")) {
                     Player p = Bukkit.getPlayer(in.readUTF());
-
+                    String server = in.readUTF();
                     ByteArrayOutputStream b = new ByteArrayOutputStream();
                     DataOutputStream out = new DataOutputStream(b);
                     try {
                         out.writeUTF("MaSuiteTeleports");
                         out.writeUTF("GetLocation");
                         out.writeUTF(p.getName());
-                        out.writeUTF(p.getWorld().getName());
-                        out.writeDouble(p.getLocation().getX());
-                        out.writeDouble(p.getLocation().getY());
-                        out.writeDouble(p.getLocation().getZ());
-                        out.writeFloat(p.getLocation().getYaw());
-                        out.writeFloat(p.getLocation().getPitch());
-                        out.writeUTF(in.readUTF());
+                        Location loc = p.getLocation();
+                        out.writeUTF(loc.getWorld().getName() + ":" + loc.getX() + ":" + loc.getY() + ":" + loc.getZ() + ":" + loc.getYaw() + ":" + loc.getPitch());
+                        out.writeUTF(server);
                         p.sendPluginMessage(plugin, "BungeeCord", b.toByteArray());
                     } catch (IOException e) {
                         e.printStackTrace();

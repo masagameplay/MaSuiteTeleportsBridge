@@ -1,7 +1,5 @@
 package fi.matiaspaavilainen.masuiteteleports;
 
-import com.google.common.io.ByteArrayDataOutput;
-import com.google.common.io.ByteStreams;
 import fi.matiaspaavilainen.masuiteteleports.commands.Back;
 import fi.matiaspaavilainen.masuiteteleports.commands.force.All;
 import fi.matiaspaavilainen.masuiteteleports.commands.force.Here;
@@ -69,13 +67,47 @@ public class MaSuiteTeleports extends JavaPlugin implements Listener {
 
     @EventHandler
     public void onDeath(PlayerRespawnEvent e) {
-        if (getConfig().getBoolean("spawn-on-death")) {
-            Player p = e.getPlayer();
-            ByteArrayDataOutput out = ByteStreams.newDataOutput();
-            out.writeUTF("MaSuiteTeleports");
-            out.writeUTF("SpawnPlayer");
-            out.writeUTF(p.getName());
-            p.sendPluginMessage(this, "BungeeCord", out.toByteArray());
+        Player p = e.getPlayer();
+        ByteArrayOutputStream b = new ByteArrayOutputStream();
+        DataOutputStream out = new DataOutputStream(b);
+        switch (getConfig().getString("respawn-type").toLowerCase()) {
+            case ("none"):
+                break;
+            case ("bed"):
+                if(p.getBedSpawnLocation() != null){
+                    p.teleport(p.getBedSpawnLocation());
+                }else{
+                    try {
+                        out.writeUTF("MaSuiteTeleports");
+                        out.writeUTF("SpawnPlayer");
+                        out.writeUTF(p.getName());
+                        p.sendPluginMessage(this, "BungeeCord", b.toByteArray());
+                    } catch (IOException e1) {
+                        e1.printStackTrace();
+                    }
+                }
+                break;
+            case ("home"):
+                try {
+                    out.writeUTF("HomeCommand");
+                    out.writeUTF(p.getName());
+                    out.writeUTF("home");
+                    p.sendPluginMessage(this, "BungeeCord", b.toByteArray());
+                } catch (IOException e1) {
+                    e1.printStackTrace();
+                }
+                break;
+            case ("spawn"):
+                try {
+                    out.writeUTF("MaSuiteTeleports");
+                    out.writeUTF("SpawnPlayer");
+                    out.writeUTF(p.getName());
+                    p.sendPluginMessage(this, "BungeeCord", b.toByteArray());
+                } catch (IOException e1) {
+                    e1.printStackTrace();
+                }
+                break;
+
         }
     }
 

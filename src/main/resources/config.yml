@@ -1,1 +1,1 @@
-spawn-on-death: true #Recommended to disable if spawn-type is set to GLOBAL
+respawn-type: home #Available types none (to disable respawning), bed, home, spawn

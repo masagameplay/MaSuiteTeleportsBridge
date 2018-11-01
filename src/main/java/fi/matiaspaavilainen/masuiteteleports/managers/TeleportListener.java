@@ -48,9 +48,8 @@ public class TeleportListener implements PluginMessageListener {
                 if (method.equals("GetLocation")) {
                     Player p = Bukkit.getPlayer(in.readUTF());
                     String server = in.readUTF();
-                    ByteArrayOutputStream b = new ByteArrayOutputStream();
-                    DataOutputStream out = new DataOutputStream(b);
-                    try {
+                    try ( ByteArrayOutputStream b = new ByteArrayOutputStream();
+                    DataOutputStream out = new DataOutputStream(b);){
                         out.writeUTF("MaSuiteTeleports");
                         out.writeUTF("GetLocation");
                         out.writeUTF(p.getName());

@@ -16,6 +16,6 @@ tpall: "&cCorrect syntax: /tpall (<player>)"
 back: "&Correct syntax: /back"
 
 spawn:
-  set: "&cCorrect syntax: /setspawn <name>"
-  delete: "&cCorrect syntax: /delspawn <name>"
+  set: "&cCorrect syntax: /setspawn <first/default>"
+  delete: "&cCorrect syntax: /delspawn <first/default>"
   teleport: "&cCorrect syntax: /spawn"

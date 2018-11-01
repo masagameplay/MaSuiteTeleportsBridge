@@ -30,7 +30,7 @@ public class Set implements CommandExecutor {
 
         Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> {
 
-            if (args.length != 0) {
+            if (args.length != 1 && !args[0].equalsIgnoreCase("default") && !args[0].equalsIgnoreCase("first")) {
                 sender.sendMessage(colorize(plugin.config.getSyntaxes().getString("spawn.set")));
                 return;
             }
@@ -45,7 +45,7 @@ public class Set implements CommandExecutor {
             Player p = (Player) sender;
 
             try (ByteArrayOutputStream b = new ByteArrayOutputStream();
-                 DataOutputStream out = new DataOutputStream(b);) {
+                 DataOutputStream out = new DataOutputStream(b)) {
 
                 out.writeUTF("MaSuiteTeleports");
                 out.writeUTF("SetSpawn");
@@ -53,6 +53,7 @@ public class Set implements CommandExecutor {
                 Location loc = p.getLocation();
                 out.writeUTF(loc.getWorld().getName() + ":" + loc.getX() + ":" + loc.getY() + ":" + loc.getZ() + ":"
                         + loc.getYaw() + ":" + loc.getPitch());
+                out.writeUTF(args[0]);
                 p.sendPluginMessage(plugin, "BungeeCord", b.toByteArray());
 
             } catch (IOException e) {

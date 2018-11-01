@@ -16,50 +16,50 @@ import static fi.matiaspaavilainen.masuiteteleports.MaSuiteTeleports.colorize;
 
 public class Back implements CommandExecutor {
 
-	private MaSuiteTeleports plugin;
+    private MaSuiteTeleports plugin;
 
-	public Back(MaSuiteTeleports p) {
-		plugin = p;
-	}
+    public Back(MaSuiteTeleports p) {
+        plugin = p;
+    }
 
-	@Override
-	public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-		if (!(sender instanceof Player)) {
-			return false;
-		}
+    @Override
+    public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
+        if (!(sender instanceof Player)) {
+            return false;
+        }
 
-		Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> {
+        Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> {
 
-			if (args.length != 0) {
-				sender.sendMessage(colorize(plugin.config.getSyntaxes().getString("back")));
-				return;
-			}
+            if (args.length != 0) {
+                sender.sendMessage(colorize(plugin.config.getSyntaxes().getString("back")));
+                return;
+            }
 
-			if (plugin.in_command.contains(sender)) { // this function is not really necessary, but safety first
-				sender.sendMessage(colorize(plugin.config.getMessages().getString("on_active_command")));
-				return;
-			}
+            if (plugin.in_command.contains(sender)) { // this function is not really necessary, but safety first
+                sender.sendMessage(colorize(plugin.config.getMessages().getString("on_active_command")));
+                return;
+            }
 
-			plugin.in_command.add(sender);
+            plugin.in_command.add(sender);
 
-			Player p = (Player) sender;
+            Player p = (Player) sender;
 
-			try (ByteArrayOutputStream b = new ByteArrayOutputStream();
-					DataOutputStream out = new DataOutputStream(b);) {
+            try (ByteArrayOutputStream b = new ByteArrayOutputStream();
+                 DataOutputStream out = new DataOutputStream(b)) {
 
-				out.writeUTF("MaSuiteTeleports");
-				out.writeUTF("Back");
-				out.writeUTF(p.getName());
-				p.sendPluginMessage(plugin, "BungeeCord", b.toByteArray());
+                out.writeUTF("MaSuiteTeleports");
+                out.writeUTF("Back");
+                out.writeUTF(p.getName());
+                p.sendPluginMessage(plugin, "BungeeCord", b.toByteArray());
 
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
 
-			plugin.in_command.remove(sender);
+            plugin.in_command.remove(sender);
 
-		});
+        });
 
-		return true;
-	}
+        return true;
+    }
 }

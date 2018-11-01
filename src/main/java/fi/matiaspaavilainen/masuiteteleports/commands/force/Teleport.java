@@ -15,117 +15,117 @@ import static fi.matiaspaavilainen.masuiteteleports.MaSuiteTeleports.colorize;
 
 public class Teleport implements CommandExecutor {
 
-	private MaSuiteTeleports plugin;
+    private MaSuiteTeleports plugin;
 
-	public Teleport(MaSuiteTeleports p) {
-		plugin = p;
-	}
+    public Teleport(MaSuiteTeleports p) {
+        plugin = p;
+    }
 
-	public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-		if (!(sender instanceof Player)) {
-			return false;
-		}
+    public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
+        if (!(sender instanceof Player)) {
+            return false;
+        }
 
-		Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> {
+        Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> {
 
-			if (plugin.in_command.contains(sender)) { // this function is not really necessary, but safety first
-				sender.sendMessage(colorize(plugin.config.getMessages().getString("on_active_command")));
-				return;
-			}
+            if (plugin.in_command.contains(sender)) { // this function is not really necessary, but safety first
+                sender.sendMessage(colorize(plugin.config.getMessages().getString("on_active_command")));
+                return;
+            }
 
-			plugin.in_command.add(sender);
+            plugin.in_command.add(sender);
 
-			Player p = (Player) sender;
+            Player p = (Player) sender;
 
-			try (ByteArrayOutputStream b = new ByteArrayOutputStream();
-					DataOutputStream out = new DataOutputStream(b);) {
+            try (ByteArrayOutputStream b = new ByteArrayOutputStream();
+                 DataOutputStream out = new DataOutputStream(b);) {
 
-				out.writeUTF("MaSuiteTeleports");
-				out.writeUTF("TeleportForceTo");
-				out.writeUTF(sender.getName());
-				switch (args.length) {
-				case (1):
-					out.writeUTF("TeleportSenderToTarget");
-					out.writeUTF(args[0]);
-					break;
-				case (2):
-					out.writeUTF("TeleportTargetToTarget");
-					out.writeUTF(args[0]);
-					out.writeUTF(args[1]);
-					break;
-				case (3):
-					// Teleport sender to coordinates
-					if (!isDouble(args[0]) && !isDouble(args[1]) && !isDouble(args[2])) {
-						break;
-					}
-					out.writeUTF("TeleportToXYZ");
-					out.writeUTF(sender.getName());
-					out.writeDouble(Double.parseDouble(args[0]));
-					out.writeDouble(Double.parseDouble(args[1]));
-					out.writeDouble(Double.parseDouble(args[2]));
-					break;
-				case (4):
-					if (!isDouble(args[1]) && !isDouble(args[2]) && !isDouble(args[3])) {
-						break;
-					}
-					// If any of the server's worlds match to args[0]
-					if (Bukkit.getWorlds().stream().anyMatch(world -> world.getName().equals(args[0]))) {
-						out.writeUTF("TeleportToCoordinates");
-						out.writeUTF(sender.getName());
-						out.writeUTF(args[0]);
-						out.writeDouble(Double.parseDouble(args[1]));
-						out.writeDouble(Double.parseDouble(args[2]));
-						out.writeDouble(Double.parseDouble(args[3]));
-						break;
-					}
+                out.writeUTF("MaSuiteTeleports");
+                out.writeUTF("TeleportForceTo");
+                out.writeUTF(sender.getName());
+                switch (args.length) {
+                    case (1):
+                        out.writeUTF("TeleportSenderToTarget");
+                        out.writeUTF(args[0]);
+                        break;
+                    case (2):
+                        out.writeUTF("TeleportTargetToTarget");
+                        out.writeUTF(args[0]);
+                        out.writeUTF(args[1]);
+                        break;
+                    case (3):
+                        // Teleport sender to coordinates
+                        if (!isDouble(args[0]) && !isDouble(args[1]) && !isDouble(args[2])) {
+                            break;
+                        }
+                        out.writeUTF("TeleportToXYZ");
+                        out.writeUTF(sender.getName());
+                        out.writeDouble(Double.parseDouble(args[0]));
+                        out.writeDouble(Double.parseDouble(args[1]));
+                        out.writeDouble(Double.parseDouble(args[2]));
+                        break;
+                    case (4):
+                        if (!isDouble(args[1]) && !isDouble(args[2]) && !isDouble(args[3])) {
+                            break;
+                        }
+                        // If any of the server's worlds match to args[0]
+                        if (Bukkit.getWorlds().stream().anyMatch(world -> world.getName().equals(args[0]))) {
+                            out.writeUTF("TeleportToCoordinates");
+                            out.writeUTF(sender.getName());
+                            out.writeUTF(args[0]);
+                            out.writeDouble(Double.parseDouble(args[1]));
+                            out.writeDouble(Double.parseDouble(args[2]));
+                            out.writeDouble(Double.parseDouble(args[3]));
+                            break;
+                        }
 
-					// If not, send target to XYZ
-					out.writeUTF("TeleportToXYZ");
-					out.writeUTF(args[0]);
-					out.writeDouble(Double.parseDouble(args[1]));
-					out.writeDouble(Double.parseDouble(args[2]));
-					out.writeDouble(Double.parseDouble(args[3]));
-					break;
-				case (5):
-					// Teleport target to location
-					if (!isDouble(args[2]) && !isDouble(args[3]) && !isDouble(args[4])) {
-						break;
-					}
-					out.writeUTF("TeleportToCoordinates");
-					out.writeUTF(args[0]);
-					out.writeUTF(args[1]);
-					out.writeDouble(Double.parseDouble(args[2]));
-					out.writeDouble(Double.parseDouble(args[3]));
-					out.writeDouble(Double.parseDouble(args[4]));
-					break;
-				default:
-					sender.sendMessage(colorize(plugin.config.getSyntaxes().getString("tp.title")));
-					for (String syntax : plugin.config.getSyntaxes().getStringList("tp.syntaxes")) {
-						sender.sendMessage(colorize(syntax));
-					}
-					break;
-				}
+                        // If not, send target to XYZ
+                        out.writeUTF("TeleportToXYZ");
+                        out.writeUTF(args[0]);
+                        out.writeDouble(Double.parseDouble(args[1]));
+                        out.writeDouble(Double.parseDouble(args[2]));
+                        out.writeDouble(Double.parseDouble(args[3]));
+                        break;
+                    case (5):
+                        // Teleport target to location
+                        if (!isDouble(args[2]) && !isDouble(args[3]) && !isDouble(args[4])) {
+                            break;
+                        }
+                        out.writeUTF("TeleportToCoordinates");
+                        out.writeUTF(args[0]);
+                        out.writeUTF(args[1]);
+                        out.writeDouble(Double.parseDouble(args[2]));
+                        out.writeDouble(Double.parseDouble(args[3]));
+                        out.writeDouble(Double.parseDouble(args[4]));
+                        break;
+                    default:
+                        sender.sendMessage(colorize(plugin.config.getSyntaxes().getString("tp.title")));
+                        for (String syntax : plugin.config.getSyntaxes().getStringList("tp.syntaxes")) {
+                            sender.sendMessage(colorize(syntax));
+                        }
+                        break;
+                }
 
-				p.sendPluginMessage(plugin, "BungeeCord", b.toByteArray());
+                p.sendPluginMessage(plugin, "BungeeCord", b.toByteArray());
 
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
 
-			plugin.in_command.remove(sender);
+            plugin.in_command.remove(sender);
 
-		});
+        });
 
-		return true;
-	}
+        return true;
+    }
 
-	// Check if string is parsable to Double
-	private boolean isDouble(String string) {
-		try {
-			Double.parseDouble(string);
-			return true;
-		} catch (NumberFormatException e) {
-			return false;
-		}
-	}
+    // Check if string is parsable to Double
+    private boolean isDouble(String string) {
+        try {
+            Double.parseDouble(string);
+            return true;
+        } catch (NumberFormatException e) {
+            return false;
+        }
+    }
 }

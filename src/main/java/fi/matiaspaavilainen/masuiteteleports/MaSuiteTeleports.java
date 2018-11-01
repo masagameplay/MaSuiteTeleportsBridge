@@ -32,7 +32,7 @@ public class MaSuiteTeleports extends JavaPlugin implements Listener {
     public Config config = new Config(this);
 
     public final List<CommandSender> in_command = new ArrayList<>();
-    
+
     @Override
     public void onEnable() {
         super.onEnable();
@@ -79,9 +79,9 @@ public class MaSuiteTeleports extends JavaPlugin implements Listener {
             case ("none"):
                 break;
             case ("bed"):
-                if(p.getBedSpawnLocation() != null){
+                if (p.getBedSpawnLocation() != null) {
                     p.teleport(p.getBedSpawnLocation());
-                }else{
+                } else {
                     try {
                         out.writeUTF("MaSuiteTeleports");
                         out.writeUTF("SpawnPlayer");

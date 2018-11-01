@@ -16,50 +16,50 @@ import static fi.matiaspaavilainen.masuiteteleports.MaSuiteTeleports.colorize;
 
 public class To implements CommandExecutor {
 
-	private MaSuiteTeleports plugin;
+    private MaSuiteTeleports plugin;
 
-	public To(MaSuiteTeleports p) {
-		plugin = p;
-	}
+    public To(MaSuiteTeleports p) {
+        plugin = p;
+    }
 
-	public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-		if (!(sender instanceof Player)) {
-			return false;
-		}
+    public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
+        if (!(sender instanceof Player)) {
+            return false;
+        }
 
-		Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> {
+        Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> {
 
-			if (args.length != 1) {
-				sender.sendMessage(colorize(plugin.config.getSyntaxes().getString("tpa")));
-				return;
-			}
+            if (args.length != 1) {
+                sender.sendMessage(colorize(plugin.config.getSyntaxes().getString("tpa")));
+                return;
+            }
 
-			if (plugin.in_command.contains(sender)) { // this function is not really necessary, but safety first
-				sender.sendMessage(colorize(plugin.config.getMessages().getString("on_active_command")));
-				return;
-			}
+            if (plugin.in_command.contains(sender)) { // this function is not really necessary, but safety first
+                sender.sendMessage(colorize(plugin.config.getMessages().getString("on_active_command")));
+                return;
+            }
 
-			plugin.in_command.add(sender);
-			
-			Player p = (Player) sender;
-			
-			try (ByteArrayOutputStream b = new ByteArrayOutputStream();
-					DataOutputStream out = new DataOutputStream(b);) {
+            plugin.in_command.add(sender);
 
-				out.writeUTF("MaSuiteTeleports");
-				out.writeUTF("TeleportRequestTo");
-				out.writeUTF(sender.getName());
-				out.writeUTF(args[0]);
-				p.sendPluginMessage(plugin, "BungeeCord", b.toByteArray());
+            Player p = (Player) sender;
 
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
+            try (ByteArrayOutputStream b = new ByteArrayOutputStream();
+                 DataOutputStream out = new DataOutputStream(b)) {
 
-			plugin.in_command.remove(sender);
+                out.writeUTF("MaSuiteTeleports");
+                out.writeUTF("TeleportRequestTo");
+                out.writeUTF(sender.getName());
+                out.writeUTF(args[0]);
+                p.sendPluginMessage(plugin, "BungeeCord", b.toByteArray());
 
-		});
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
 
-		return true;
-	}
+            plugin.in_command.remove(sender);
+
+        });
+
+        return true;
+    }
 }

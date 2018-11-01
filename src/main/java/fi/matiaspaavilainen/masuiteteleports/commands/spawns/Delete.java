@@ -48,6 +48,7 @@ public class Delete implements CommandExecutor {
                 out.writeUTF("MaSuiteTeleports");
                 out.writeUTF("DelSpawn");
                 out.writeUTF(p.getName());
+                out.writeUTF(args[0]);
                 p.sendPluginMessage(plugin, "BungeeCord", b.toByteArray());
 
             } catch (IOException e) {

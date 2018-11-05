@@ -45,12 +45,10 @@ public class Deny implements CommandExecutor {
 
             try (ByteArrayOutputStream b = new ByteArrayOutputStream();
                  DataOutputStream out = new DataOutputStream(b)) {
-
                 out.writeUTF("MaSuiteTeleports");
                 out.writeUTF("TeleportDeny");
                 out.writeUTF(sender.getName());
                 p.sendPluginMessage(plugin, "BungeeCord", b.toByteArray());
-
             } catch (IOException e) {
                 e.printStackTrace();
             }

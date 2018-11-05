@@ -38,7 +38,7 @@ public class Teleport implements CommandExecutor {
             Player p = (Player) sender;
 
             try (ByteArrayOutputStream b = new ByteArrayOutputStream();
-                 DataOutputStream out = new DataOutputStream(b);) {
+                 DataOutputStream out = new DataOutputStream(b)) {
 
                 out.writeUTF("MaSuiteTeleports");
                 out.writeUTF("TeleportForceTo");

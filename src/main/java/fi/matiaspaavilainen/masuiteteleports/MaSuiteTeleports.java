@@ -17,7 +17,9 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
+import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.player.PlayerRespawnEvent;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -26,12 +28,15 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 public class MaSuiteTeleports extends JavaPlugin implements Listener {
 
     public Config config = new Config(this);
 
     public final List<CommandSender> in_command = new ArrayList<>();
+    public List<UUID> tpQue = new ArrayList<>();
+
 
     @Override
     public void onEnable() {
@@ -133,6 +138,21 @@ public class MaSuiteTeleports extends JavaPlugin implements Listener {
         }
     }
 
+
+    @EventHandler
+    public void onDamage(EntityDamageEvent e) {
+        if (e.getEntity() instanceof Player) {
+            if (tpQue.contains(e.getEntity().getUniqueId())) {
+                e.setCancelled(true);
+            }
+        }
+
+    }
+
+    @EventHandler
+    public void onLeave(PlayerQuitEvent e){
+        in_command.remove(e.getPlayer());
+    }
     public static String colorize(String msg) {
         return ChatColor.translateAlternateColorCodes('&', msg);
     }

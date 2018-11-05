@@ -53,7 +53,7 @@ public class Set implements CommandExecutor {
                 Location loc = p.getLocation();
                 out.writeUTF(loc.getWorld().getName() + ":" + loc.getX() + ":" + loc.getY() + ":" + loc.getZ() + ":"
                         + loc.getYaw() + ":" + loc.getPitch());
-                out.writeUTF(args[0]);
+                out.writeUTF(args[0].toLowerCase());
                 p.sendPluginMessage(plugin, "BungeeCord", b.toByteArray());
 
             } catch (IOException e) {

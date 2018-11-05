@@ -29,7 +29,7 @@ public class Delete implements CommandExecutor {
 
         Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> {
 
-            if (args.length != 1  && !args[0].equalsIgnoreCase("default") && !args[0].equalsIgnoreCase("first")) {
+            if (args.length != 1 && !args[0].equalsIgnoreCase("default") && !args[0].equalsIgnoreCase("first")) {
                 sender.sendMessage(colorize(plugin.config.getSyntaxes().getString("spawn.delete")));
                 return;
             }
@@ -48,7 +48,7 @@ public class Delete implements CommandExecutor {
                 out.writeUTF("MaSuiteTeleports");
                 out.writeUTF("DelSpawn");
                 out.writeUTF(p.getName());
-                out.writeUTF(args[0]);
+                out.writeUTF(args[0].toLowerCase());
                 p.sendPluginMessage(plugin, "BungeeCord", b.toByteArray());
 
             } catch (IOException e) {

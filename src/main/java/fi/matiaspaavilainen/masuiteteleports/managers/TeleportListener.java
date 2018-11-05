@@ -32,21 +32,37 @@ public class TeleportListener implements PluginMessageListener {
                 }
                 if (method.equals("PlayerToXYZ")) {
                     Player p = Bukkit.getPlayer(in.readUTF());
+                    if (p == null) {
+                        return;
+                    }
+                    plugin.tpQue.add(p.getUniqueId());
                     p.teleport(new Location(p.getWorld(), in.readDouble(), in.readDouble(), in.readDouble()));
+                    Bukkit.getServer().getScheduler().runTaskLater(plugin, () -> plugin.tpQue.remove(p.getUniqueId()), 100);
                 }
                 if (method.equals("PlayerToLocation")) {
                     Player p = Bukkit.getPlayer(in.readUTF());
+                    if (p == null) {
+                        return;
+                    }
+                    plugin.tpQue.add(p.getUniqueId());
                     p.teleport(new Location(Bukkit.getWorld(in.readUTF()), in.readDouble(), in.readDouble(), in.readDouble()));
+                    Bukkit.getServer().getScheduler().runTaskLater(plugin, () -> plugin.tpQue.remove(p.getUniqueId()), 100);
                 }
 
                 if (method.equals("SpawnPlayer")) {
                     Player p = Bukkit.getPlayer(in.readUTF());
+                    if (p == null) {
+                        return;
+                    }
                     String[] locInfo = in.readUTF().split(":");
                     Location loc = new Location(Bukkit.getWorld(locInfo[0]), Double.parseDouble(locInfo[1]), Double.parseDouble(locInfo[2]), Double.parseDouble(locInfo[3]), Float.parseFloat(locInfo[4]), Float.parseFloat(locInfo[5]));
                     p.teleport(loc);
                 }
                 if (method.equals("GetLocation")) {
                     Player p = Bukkit.getPlayer(in.readUTF());
+                    if (p == null) {
+                        return;
+                    }
                     String server = in.readUTF();
                     try (ByteArrayOutputStream b = new ByteArrayOutputStream();
                          DataOutputStream out = new DataOutputStream(b)) {
@@ -68,12 +84,16 @@ public class TeleportListener implements PluginMessageListener {
     }
 
     private void teleportPlayer(final String s, final String t) {
+        Player sender = Bukkit.getPlayer(s);
+        Player target = Bukkit.getPlayer(t);
         Bukkit.getServer().getScheduler().runTaskLater(plugin, () -> {
-            Player sender = Bukkit.getPlayer(s);
-            Player target = Bukkit.getPlayer(t);
             if (sender != null && target != null) {
+                sender.setInvulnerable(false);
+                plugin.tpQue.add(sender.getUniqueId());
                 sender.teleport(target);
             }
         }, 5);
+
+        Bukkit.getServer().getScheduler().runTaskLater(plugin, () -> plugin.tpQue.remove(sender.getUniqueId()), 100);
     }
 }

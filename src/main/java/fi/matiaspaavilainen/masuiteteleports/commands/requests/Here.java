@@ -44,13 +44,11 @@ public class Here implements CommandExecutor {
 
             try (ByteArrayOutputStream b = new ByteArrayOutputStream();
                  DataOutputStream out = new DataOutputStream(b)) {
-
                 out.writeUTF("MaSuiteTeleports");
                 out.writeUTF("TeleportRequestHere");
                 out.writeUTF(sender.getName());
                 out.writeUTF(args[0]);
                 p.sendPluginMessage(plugin, "BungeeCord", b.toByteArray());
-
             } catch (IOException e) {
                 e.printStackTrace();
             }

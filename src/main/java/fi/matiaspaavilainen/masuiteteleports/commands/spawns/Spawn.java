@@ -45,13 +45,11 @@ public class Spawn implements CommandExecutor {
             Player p = (Player) sender;
 
             try (ByteArrayOutputStream b = new ByteArrayOutputStream();
-                 DataOutputStream out = new DataOutputStream(b);) {
-
+                 DataOutputStream out = new DataOutputStream(b)) {
                 out.writeUTF("MaSuiteTeleports");
                 out.writeUTF("SpawnPlayer");
                 out.writeUTF(p.getName());
                 p.sendPluginMessage(plugin, "BungeeCord", b.toByteArray());
-
             } catch (IOException e) {
                 e.printStackTrace();
             }

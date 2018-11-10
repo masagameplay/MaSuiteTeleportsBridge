@@ -35,7 +35,7 @@ public class Here implements CommandExecutor {
             }
 
             if (plugin.in_command.contains(sender)) { // this function is not really necessary, but safety first
-                sender.sendMessage(colorize(plugin.config.getMessages().getString("on_active_command")));
+                sender.sendMessage(colorize(plugin.config.getMessages().getString("on-active-command")));
                 return;
             }
 

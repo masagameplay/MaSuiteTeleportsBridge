@@ -1,1 +1,2 @@
 respawn-type: home #Available types none (to disable respawning), bed, home, spawn
+first-spawn: true

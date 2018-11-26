@@ -30,7 +30,12 @@ public class Set implements CommandExecutor {
 
         Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> {
 
-            if (args.length != 1 && !args[0].equalsIgnoreCase("default") && !args[0].equalsIgnoreCase("first")) {
+            if (args.length != 1) {
+                sender.sendMessage(colorize(plugin.config.getSyntaxes().getString("spawn.set")));
+                return;
+            }
+
+            if (!args[0].equalsIgnoreCase("default") && !args[0].equalsIgnoreCase("first")) {
                 sender.sendMessage(colorize(plugin.config.getSyntaxes().getString("spawn.set")));
                 return;
             }

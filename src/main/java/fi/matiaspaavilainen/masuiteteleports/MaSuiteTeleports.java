@@ -19,6 +19,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
+import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.player.PlayerRespawnEvent;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -49,6 +50,7 @@ public class MaSuiteTeleports extends JavaPlugin implements Listener {
         config.createConfigs();
         saveDefaultConfig();
 
+        getConfig().addDefault("first-spawn", true);
         // Load
         loadCommands();
 
@@ -123,9 +125,8 @@ public class MaSuiteTeleports extends JavaPlugin implements Listener {
 
     @EventHandler
     public void onDeath(PlayerDeathEvent e) {
-        ByteArrayOutputStream b = new ByteArrayOutputStream();
-        DataOutputStream out = new DataOutputStream(b);
-        try {
+        try (ByteArrayOutputStream b = new ByteArrayOutputStream();
+             DataOutputStream out = new DataOutputStream(b)) {
             out.writeUTF("MaSuiteTeleports");
             out.writeUTF("GetLocation");
             out.writeUTF(e.getEntity().getName());
@@ -150,9 +151,29 @@ public class MaSuiteTeleports extends JavaPlugin implements Listener {
     }
 
     @EventHandler
-    public void onLeave(PlayerQuitEvent e){
+    public void onLeave(PlayerQuitEvent e) {
         in_command.remove(e.getPlayer());
     }
+
+    @EventHandler
+    public void onJoin(PlayerJoinEvent e) {
+        if(getConfig().getBoolean("first-spawn")){
+            if (!e.getPlayer().hasPlayedBefore()) {
+                try (ByteArrayOutputStream b = new ByteArrayOutputStream();
+                     DataOutputStream out = new DataOutputStream(b)) {
+                    out.writeUTF("MaSuiteTeleports");
+                    out.writeUTF("FirstSpawnPlayer");
+                    out.writeUTF(e.getPlayer().getName());
+                    getServer().getScheduler().runTaskLaterAsynchronously(this, () -> e.getPlayer().sendPluginMessage(this, "BungeeCord", b.toByteArray()), 10);
+                } catch (IOException e1) {
+                    e1.printStackTrace();
+                }
+            }
+        }
+
+
+    }
+
     public static String colorize(String msg) {
         return ChatColor.translateAlternateColorCodes('&', msg);
     }

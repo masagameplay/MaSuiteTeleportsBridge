@@ -29,11 +29,15 @@ public class Delete implements CommandExecutor {
 
         Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> {
 
-            if (args.length != 1 && !args[0].equalsIgnoreCase("default") && !args[0].equalsIgnoreCase("first")) {
+            if (args.length != 1) {
                 sender.sendMessage(colorize(plugin.config.getSyntaxes().getString("spawn.delete")));
                 return;
             }
 
+            if (!args[0].equalsIgnoreCase("default") && !args[0].equalsIgnoreCase("first")) {
+                sender.sendMessage(colorize(plugin.config.getSyntaxes().getString("spawn.delete")));
+                return;
+            }
             if (plugin.in_command.contains(sender)) { // this function is not really necessary, but safety first
                 sender.sendMessage(colorize(plugin.config.getMessages().getString("on-active-command")));
                 return;

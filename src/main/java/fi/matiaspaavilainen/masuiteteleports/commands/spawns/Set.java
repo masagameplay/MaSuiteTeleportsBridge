@@ -51,10 +51,9 @@ public class Set implements CommandExecutor {
 
             try (ByteArrayOutputStream b = new ByteArrayOutputStream();
                  DataOutputStream out = new DataOutputStream(b)) {
-
                 out.writeUTF("MaSuiteTeleports");
                 out.writeUTF("SetSpawn");
-                out.writeUTF(sender.getName());
+                out.writeUTF(p.getName());
                 Location loc = p.getLocation();
                 out.writeUTF(loc.getWorld().getName() + ":" + loc.getX() + ":" + loc.getY() + ":" + loc.getZ() + ":"
                         + loc.getYaw() + ":" + loc.getPitch());

@@ -50,7 +50,8 @@ public class MaSuiteTeleports extends JavaPlugin implements Listener {
         config.createConfigs();
         saveDefaultConfig();
 
-        getConfig().addDefault("first-spawn", true);
+        getConfig().addDefault("spawn.first", true);
+        //getConfig().addDefault("spawn.force", true);
         // Load
         loadCommands();
 
@@ -157,7 +158,7 @@ public class MaSuiteTeleports extends JavaPlugin implements Listener {
 
     @EventHandler
     public void onJoin(PlayerJoinEvent e) {
-        if(getConfig().getBoolean("first-spawn")){
+        if(getConfig().getBoolean("spawn.first")){
             if (!e.getPlayer().hasPlayedBefore()) {
                 try (ByteArrayOutputStream b = new ByteArrayOutputStream();
                      DataOutputStream out = new DataOutputStream(b)) {
@@ -170,6 +171,20 @@ public class MaSuiteTeleports extends JavaPlugin implements Listener {
                 }
             }
         }
+        /*if(getConfig().getBoolean("spawn.force")){
+            if(e.getPlayer().hasPlayedBefore()){
+                try (ByteArrayOutputStream b = new ByteArrayOutputStream();
+                     DataOutputStream out = new DataOutputStream(b)) {
+                    out.writeUTF("MaSuiteTeleports");
+                    out.writeUTF("SpawnPlayer");
+                    out.writeUTF(e.getPlayer().getName());
+                    getServer().getScheduler().runTaskLaterAsynchronously(this, () -> e.getPlayer().sendPluginMessage(this, "BungeeCord", b.toByteArray()), 10);
+                } catch (IOException e1) {
+                    e1.printStackTrace();
+                }
+            }
+        }*/
+
 
 
     }

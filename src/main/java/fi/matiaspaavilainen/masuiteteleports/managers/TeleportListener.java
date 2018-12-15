@@ -25,8 +25,8 @@ public class TeleportListener implements PluginMessageListener {
         String method = null;
         try {
             subchannel = in.readUTF();
-            method = in.readUTF();
             if (subchannel.equals("MaSuiteTeleports")) {
+                method = in.readUTF();
                 if (method.equals("PlayerToPlayer")) {
                     teleportPlayer(in.readUTF(), in.readUTF());
                 }

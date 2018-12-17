@@ -54,7 +54,12 @@ public class Lock implements CommandExecutor {
                 out.writeUTF("MaSuiteTeleports");
                 out.writeUTF("TeleportLock");
                 out.writeUTF(sender.getName());
-                out.writeUTF(args[0].toLowerCase());
+                if(args[0].equalsIgnoreCase("yes") || args[0].equalsIgnoreCase("accept")){
+                    out.writeBoolean(true);
+                } else {
+                    out.writeBoolean(false);
+                }
+
                 p.sendPluginMessage(plugin, "BungeeCord", b.toByteArray());
             } catch (IOException e) {
                 e.printStackTrace();

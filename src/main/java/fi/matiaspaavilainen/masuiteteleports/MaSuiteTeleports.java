@@ -52,6 +52,7 @@ public class MaSuiteTeleports extends JavaPlugin implements Listener {
         saveDefaultConfig();
 
         getConfig().addDefault("spawn.first", true);
+        config.getSyntaxes().addDefault("tpalock", "&cCorrect syntax: /tpalock <accept/deny/yes/no>");
         //getConfig().addDefault("spawn.force", true);
         // Load
         loadCommands();

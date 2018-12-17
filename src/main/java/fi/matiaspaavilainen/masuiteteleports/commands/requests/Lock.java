@@ -34,8 +34,10 @@ public class Lock implements CommandExecutor {
                 return;
             }
 
-            if(!args[0].equalsIgnoreCase("yes") && !args[0].equalsIgnoreCase("no") &&
-            !args[0].equalsIgnoreCase("accept") &&!args[0].equalsIgnoreCase("deny")){
+            if (!args[0].equalsIgnoreCase("yes") && !args[0].equalsIgnoreCase("no") &&
+                    !args[0].equalsIgnoreCase("accept") && !args[0].equalsIgnoreCase("deny")
+                    && !args[0].equalsIgnoreCase("off")
+            ) {
                 sender.sendMessage(colorize(plugin.config.getSyntaxes().getString("tpalock")));
                 return;
             }
@@ -54,12 +56,18 @@ public class Lock implements CommandExecutor {
                 out.writeUTF("MaSuiteTeleports");
                 out.writeUTF("TeleportLock");
                 out.writeUTF(sender.getName());
-                if(args[0].equalsIgnoreCase("yes") || args[0].equalsIgnoreCase("accept")){
-                    out.writeBoolean(true);
-                } else {
-                    out.writeBoolean(false);
+                if (args[0].equalsIgnoreCase("yes") || args[0].equalsIgnoreCase("no") ||
+                        args[0].equalsIgnoreCase("accept") || args[0].equalsIgnoreCase("deny")) {
+                    out.writeUTF("Enable");
+                    if (args[0].equalsIgnoreCase("yes") || args[0].equalsIgnoreCase("accept")) {
+                        out.writeBoolean(true);
+                    } else if (args[0].equalsIgnoreCase("no") || args[0].equalsIgnoreCase("deny")) {
+                        out.writeBoolean(false);
+                    }
                 }
-
+                if (args[0].equalsIgnoreCase("off")) {
+                    out.writeUTF("Disable");
+                }
                 p.sendPluginMessage(plugin, "BungeeCord", b.toByteArray());
             } catch (IOException e) {
                 e.printStackTrace();

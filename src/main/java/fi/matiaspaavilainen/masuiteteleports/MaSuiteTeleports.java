@@ -6,6 +6,7 @@ import fi.matiaspaavilainen.masuiteteleports.commands.force.Here;
 import fi.matiaspaavilainen.masuiteteleports.commands.force.Teleport;
 import fi.matiaspaavilainen.masuiteteleports.commands.requests.Accept;
 import fi.matiaspaavilainen.masuiteteleports.commands.requests.Deny;
+import fi.matiaspaavilainen.masuiteteleports.commands.requests.Lock;
 import fi.matiaspaavilainen.masuiteteleports.commands.requests.To;
 import fi.matiaspaavilainen.masuiteteleports.commands.spawns.Delete;
 import fi.matiaspaavilainen.masuiteteleports.commands.spawns.Set;
@@ -68,6 +69,7 @@ public class MaSuiteTeleports extends JavaPlugin implements Listener {
         getCommand("tpdeny").setExecutor(new Deny(this));
         getCommand("tpahere").setExecutor(new fi.matiaspaavilainen.masuiteteleports.commands.requests.Here(this));
         getCommand("tpa").setExecutor(new To(this));
+        getCommand("tpalock").setExecutor(new Lock(this));
 
         // Spawn
         getCommand("delspawn").setExecutor(new Delete(this));
@@ -158,7 +160,7 @@ public class MaSuiteTeleports extends JavaPlugin implements Listener {
 
     @EventHandler
     public void onJoin(PlayerJoinEvent e) {
-        if(getConfig().getBoolean("spawn.first")){
+        if (getConfig().getBoolean("spawn.first")) {
             if (!e.getPlayer().hasPlayedBefore()) {
                 try (ByteArrayOutputStream b = new ByteArrayOutputStream();
                      DataOutputStream out = new DataOutputStream(b)) {
@@ -184,7 +186,6 @@ public class MaSuiteTeleports extends JavaPlugin implements Listener {
                 }
             }
         }*/
-
 
 
     }

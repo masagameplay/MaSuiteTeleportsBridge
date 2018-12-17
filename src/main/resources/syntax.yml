@@ -2,6 +2,7 @@ tpa: "&cCorrect syntax: /tpa <player>"
 tpahere: "&cCorrect syntax: /tpahere <player>"
 tpaccept: "&cCorrect syntax: /tpaccept"
 tpdeny: "&cCorrect syntax: /tpdeny"
+tpalock: "&cCorrect syntax: /tpalock <accept/deny/yes/no>"
 tp:
   title: "&cCorrect syntaxes:"
   syntaxes:
